@@ -1,0 +1,55 @@
+{
+  "name": "ssrp",
+  "description": "An implementation of the SQL Server Resolution protocol.",
+  "version": "0.0.0-development",
+  "main": "lib/index.js",
+  "scripts": {
+    "pretest": "eslint . && flow && pegjs -o src/parser.js src/parser.pegjs",
+    "test": "mocha",
+    "prepublish": "pegjs -o src/parser.js src/parser.pegjs && babel src --out-dir lib && flow-copy-source src lib",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "author": "Arthur Schreiber (schreiber.arthur@gmail.com)",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-eslint": "^7.2.1",
+    "babel-plugin-syntax-flow": "^6.18.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.2.2",
+    "babel-preset-flow": "^6.23.0",
+    "babel-register": "^6.24.0",
+    "chai": "^3.5.0",
+    "eslint": "^3.18.0",
+    "flow-bin": "^0.42.0",
+    "flow-copy-source": "^1.1.0",
+    "flow-typed": "^2.0.0",
+    "mocha": "^3.2.0",
+    "pegjs": "^0.10.0",
+    "semantic-release": "^6.3.2",
+    "semantic-release-cli": "^3.0.3"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.23.0"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": 4
+          }
+        }
+      ],
+      "flow"
+    ],
+    "plugins": [
+      "transform-runtime"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tediousjs/node-ssrp.git"
+  }
+}
