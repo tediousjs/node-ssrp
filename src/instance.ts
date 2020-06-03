@@ -1,12 +1,10 @@
-/* @flow */
-
-module.exports = class Instance {
+export default class Instance {
   serverName: string;
   instanceName: string;
   isClustered: boolean;
   version: string;
-  tcpPort: ?number;
-  npPipeName: ?string;
+  tcpPort?: number;
+  npPipeName?: string;
 
   constructor(serverName: string, instanceName: string, isClustered: boolean, version: string) {
     this.serverName = serverName;
@@ -16,4 +14,4 @@ module.exports = class Instance {
     this.tcpPort = undefined;
     this.npPipeName = undefined;
   }
-};
+}
