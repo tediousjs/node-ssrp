@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "pretest": "eslint . --ext js,ts && tsc && pegjs -o src/parser.js src/parser.pegjs",
+    "lint": "eslint . --ext js,ts && tsc",
     "test": "mocha",
     "build": "pegjs -o src/parser.js src/parser.pegjs",
     "prepublish": "pegjs -o src/parser.js src/parser.pegjs && babel src --out-dir lib --extensions .js,.ts && tsc --noEmit false --emitDeclarationOnly true && cp src/parser.d.ts lib/parser.d.ts"
