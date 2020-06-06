@@ -1528,7 +1528,7 @@ function peg$parse(input, options) {
   }
 
 
-  const Instance = require('./instance');
+  const Instance = require('./instance').default;
 
 
   peg$result = peg$startRuleFunction();

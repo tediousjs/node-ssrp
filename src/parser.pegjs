@@ -7,7 +7,7 @@
 */
 
 {
-const Instance = require('./instance');
+const Instance = require('./instance').default;
 }
 
 RESP_DATA = CLNT_BCAST_EX_RESPONSE / CLNT_UCAST_EX_RESPONSE / CLNT_UCAST_INST_RESPONSE
