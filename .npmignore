@@ -1,6 +1,7 @@
-src/
-test/
-.eslintignore
-.eslintrc
-.npmignore
-.travis.yml
+/.github
+/src/
+/test/
+/.eslintignore
+/.eslintrc
+/.npmignore
+/tsconfig.json
