@@ -2,6 +2,8 @@ import dgram from 'dgram';
 
 import { assert } from 'chai';
 
+import { AbortController } from 'abort-controller';
+
 import { listInstance, listInstances } from '../src/index';
 import Instance from '../src/instance';
 import * as Parser from '../src/parser';
@@ -136,6 +138,31 @@ describe('Client', function() {
             assert.equal(instance, undefined);
           });
         });
+
+        describe('when aborted via the given signal', function() {
+          it('returns before timing out', async function() {
+            const start = Date.now();
+
+            const controller = new AbortController();
+
+            setTimeout(() => {
+              controller.abort();
+            }, 50);
+
+            await assert.isRejected(listInstance({
+              host: server.address().address,
+              family: family === 'udp6' ? 6 : 4,
+              port: server.address().port,
+              timeout: 100,
+              signal: controller.signal
+            }, 'YUKONSTD'));
+
+            const duration = Date.now() - start;
+
+            assert.isAtLeast(duration, 50);
+            assert.isAtMost(duration, 99);
+          });
+        });
       });
 
       describe('listInstances', function() {
@@ -235,7 +262,7 @@ describe('Client', function() {
           });
         });
 
-        describe('without a response', async function() {
+        describe('without a response', function() {
           it('times out after the specified timeout', async function() {
             const start = Date.now();
 
@@ -261,6 +288,31 @@ describe('Client', function() {
             });
 
             assert.lengthOf(instances, 0);
+          });
+        });
+
+        describe('when aborted via the given signal', function() {
+          it('returns before timing out', async function() {
+            const start = Date.now();
+
+            const controller = new AbortController();
+
+            setTimeout(() => {
+              controller.abort();
+            }, 50);
+
+            await assert.isRejected(listInstances({
+              host: server.address().address,
+              family: family === 'udp6' ? 6 : 4,
+              port: server.address().port,
+              timeout: 100,
+              signal: controller.signal
+            }));
+
+            const duration = Date.now() - start;
+
+            assert.isAtLeast(duration, 50);
+            assert.isAtMost(duration, 99);
           });
         });
       });
