@@ -158,7 +158,7 @@ import * as Parser from '../src/parser';
 
           const duration = Date.now() - start;
 
-          assert.isAtLeast(duration, 50);
+          assert.isAtLeast(duration, 49);
           assert.isAtMost(duration, 99);
         });
       });
@@ -310,7 +310,7 @@ import * as Parser from '../src/parser';
 
           const duration = Date.now() - start;
 
-          assert.isAtLeast(duration, 50);
+          assert.isAtLeast(duration, 49);
           assert.isAtMost(duration, 99);
         });
       });
