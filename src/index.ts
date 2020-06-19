@@ -31,7 +31,7 @@ export async function listInstance({ host, port = DEFAULT_PORT, family, signal, 
     Buffer.from(instanceName)
   ]);
 
-  const response = await sendRequest({ address: host, family }, port, false, timeout, request, signal);
+  const response = await sendRequest({ address: host, family }, port, timeout, request, signal);
   if (!response) {
     return;
   }
@@ -51,28 +51,7 @@ export async function listInstances({ host, port = DEFAULT_PORT, family, signal,
   }
 
   const request = Buffer.from([0x03]);
-  const response = await sendRequest({ address: host, family }, port, false, timeout, request, signal);
-  if (!response) {
-    return [];
-  }
-
-  return parseResponse(response);
-}
-
-export async function listAllInstances({ port = DEFAULT_PORT, family, signal, timeout = DEFAULT_TIMEOUT }: {
-  port?: number;
-  family: 4 | 6;
-  timeout?: number;
-  signal?: AbortSignal;
-}) {
-  if (signal?.aborted) {
-    throw new Error('aborted');
-  }
-
-  const address = family === 6 ? 'FF02::1' : '255.255.255.255';
-
-  const request = Buffer.from([0x02]);
-  const response = await sendRequest({ address, family }, port, true, timeout, request, signal);
+  const response = await sendRequest({ address: host, family }, port, timeout, request, signal);
   if (!response) {
     return [];
   }
@@ -91,7 +70,7 @@ function parseResponse(buffer: Buffer): Array < Instance > {
   return parse(responseString);
 }
 
-function sendRequest(address: { address: string, family: 4 | 6 }, port: number, broadcast: boolean, timeout: number, request: Buffer, signal?: AbortSignal): Promise <Buffer | undefined> {
+function sendRequest(address: { address: string, family: 4 | 6 }, port: number, timeout: number, request: Buffer, signal?: AbortSignal): Promise <Buffer | undefined> {
   const socketType = address.family === 6 ? 'udp6' : 'udp4';
   const socket = dgram.createSocket(socketType);
 
@@ -142,8 +121,6 @@ function sendRequest(address: { address: string, family: 4 | 6 }, port: number, 
 
       socket.on('error', onError);
       socket.on('message', onMessage);
-
-      socket.setBroadcast(broadcast);
 
       socket.send(request, 0, request.length, port, address.address, (err) => {
         if (err) {
